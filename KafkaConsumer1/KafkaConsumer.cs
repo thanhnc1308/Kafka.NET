@@ -7,6 +7,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Confluent.Kafka;
 using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
+using Kafka.NET.Models;
 
 namespace KafkaConsumer1
 {
@@ -41,6 +43,10 @@ namespace KafkaConsumer1
                 {
                     var cr = kafkaConsumer.Consume(cancellationToken);
                     System.Console.WriteLine($"{cr.Message.Key}: {cr.Message.Value}");
+                    var todoItem = JsonConvert.DeserializeObject<TodoItem>(cr.Message.Value);
+
+                    // handle business logic
+                    System.Console.WriteLine($"{todoItem.id} - {todoItem.name} - {todoItem.is_complete} - {todoItem.created_at}");
                 }
                 catch (ConsumeException e)
                 {

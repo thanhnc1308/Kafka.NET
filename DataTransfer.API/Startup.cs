@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using DataTransfer.API.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -29,7 +28,6 @@ namespace DataTransfer.API
         {
             services.AddSingleton<KafkaClientHandle>();
             services.AddSingleton<KafkaProducer<string, string>>();
-            services.AddSingleton<KafkaProducer<string, TodoItem>>();
             services.AddControllers();
         }
 
