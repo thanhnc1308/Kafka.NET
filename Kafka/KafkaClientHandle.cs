@@ -25,7 +25,7 @@ namespace NCT.Kafka
         public KafkaClientHandle(IConfiguration config)
         {
             var conf = new ProducerConfig();
-            config.GetSection("Kafka:ProducerSettings").Bind(conf);
+            config.GetSection("Kafka:ProducerConfigs").Bind(conf);
             this.kafkaProducer = new ProducerBuilder<byte[], byte[]>(conf).Build();
         }
 

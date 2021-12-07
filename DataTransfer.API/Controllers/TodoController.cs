@@ -34,16 +34,25 @@ namespace DataTransfer.API.Controllers
             System.Console.WriteLine($"Write to topic {_topic}");
             try
             {
-                var todoItem = new TodoItem();
-                var mesage = JsonConvert.SerializeObject(todoItem);
-                var res = await _producer.ProduceAsync(
-                    _topic,
-                    new Message<string, string>
+                for (int i = 0; i < 100; i++)
+                {
+                    for (int j = 0; j < 100000000; j++)
                     {
-                        Value = mesage
+                        var a = 0;
+                        a++;
+                        a++;
                     }
-                );
-                System.Console.WriteLine(JsonConvert.SerializeObject(res));
+                    var todoItem = new TodoItem();
+                    var mesage = JsonConvert.SerializeObject(todoItem);
+                    var res = await _producer.ProduceAsync(
+                        _topic,
+                        new Message<string, string>
+                        {
+                            Value = mesage
+                        }
+                    );
+                    Console.WriteLine($"Produced message {i}");
+                }
             }
             catch (System.Exception e)
             {
@@ -67,28 +76,39 @@ namespace DataTransfer.API.Controllers
             System.Console.WriteLine($"Write to topic {_topic}");
             try
             {
-                var todoItem = new TodoItem();
-                var mesage = JsonConvert.SerializeObject(todoItem);
-                // For higher throughput, use the non-blocking Produce call
-                // and handle delivery reports out-of-band, instead of awaiting
-                // the result of a ProduceAsync call.
-                _producer.Produce(
-                    _topic,
-                    new Message<string, string> {
-                        Value = mesage
-                    },
-                    (deliveryReport) => {
-                        if (deliveryReport.Error.Code != ErrorCode.NoError)
-                        {
-                            Console.WriteLine($"Failed to deliver message: {deliveryReport.Error.Reason}");
-                        }
-                        else
-                        {
-                            System.Console.WriteLine(JsonConvert.SerializeObject(deliveryReport));
-                            // Console.WriteLine($"Produced message to: {deliveryReport.TopicPartitionOffset}");
-                        }
+                for (int i = 0; i < 100; i++)
+                {
+                    for (int j = 0; j < 100000000; j++)
+                    {
+                        var a = 0;
+                        a++;
+                        a++;
                     }
-                );
+                    var todoItem = new TodoItem();
+                    var mesage = JsonConvert.SerializeObject(todoItem);
+                    // For higher throughput, use the non-blocking Produce call
+                    // and handle delivery reports out-of-band, instead of awaiting
+                    // the result of a ProduceAsync call.
+                    _producer.Produce(
+                        _topic,
+                        new Message<string, string>
+                        {
+                            Value = mesage
+                        },
+                        (deliveryReport) =>
+                        {
+                            if (deliveryReport.Error.Code != ErrorCode.NoError)
+                            {
+                                Console.WriteLine($"Failed to deliver message: {deliveryReport.Error.Reason}");
+                            }
+                            else
+                            {
+                                // System.Console.WriteLine(JsonConvert.SerializeObject(deliveryReport));
+                                Console.WriteLine($"Produced message {i} to: {deliveryReport.TopicPartitionOffset}");
+                            }
+                        }
+                    );
+                }
             }
             catch (System.Exception e)
             {
@@ -118,10 +138,12 @@ namespace DataTransfer.API.Controllers
                 // the result of a ProduceAsync call.
                 _producer.Produce(
                     _topic,
-                    new Message<string, string> {
+                    new Message<string, string>
+                    {
                         Value = mesage
                     },
-                    (deliveryReport) => {
+                    (deliveryReport) =>
+                    {
                         if (deliveryReport.Error.Code != ErrorCode.NoError)
                         {
                             Console.WriteLine($"Failed to deliver message: {deliveryReport.Error.Reason}");

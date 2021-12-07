@@ -22,7 +22,7 @@ namespace KafkaConsumer1
         {
             _logger = logger;
             var consumerConfig = new ConsumerConfig();
-            config.GetSection("Kafka:ConsumerSettings").Bind(consumerConfig);
+            config.GetSection("Kafka:ConsumerConfigs").Bind(consumerConfig);
             _topic = config.GetValue<string>("Kafka:Topic");
             System.Console.WriteLine($"Listen to topic {_topic}");
             kafkaConsumer = new ConsumerBuilder<string, string>(consumerConfig).Build();
@@ -42,9 +42,13 @@ namespace KafkaConsumer1
                 try
                 {
                     var cr = kafkaConsumer.Consume(cancellationToken);
-                    System.Console.WriteLine($"{cr.Message.Key}: {cr.Message.Value}");
                     var todoItem = JsonConvert.DeserializeObject<TodoItem>(cr.Message.Value);
-
+                    for (int j = 0; j < 900000000; j++)
+                    {
+                        var a = 0;
+                        a++;
+                        a++;
+                    }
                     // handle business logic
                     System.Console.WriteLine($"{todoItem.id} - {todoItem.name} - {todoItem.is_complete} - {todoItem.created_at}");
                 }
